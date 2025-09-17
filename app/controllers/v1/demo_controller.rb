@@ -1,6 +1,6 @@
 class V1::DemoController < ApplicationController
   include Login
-  skip_before_action :authenticate_request!, only: [:campaigns, :campaign]
+  skip_before_action :authenticate_request!, only: [:campaigns, :campaign, :user_data, :create_trade]
 
   # GET /v1/demo/campaigns
   def campaigns
@@ -9,32 +9,59 @@ class V1::DemoController < ApplicationController
         {
           id: 1,
           name: "Summer Trading Challenge",
-          description: "Trade your way to the top this summer",
-          start_date: "2024-06-01",
-          end_date: "2024-08-31",
+          start_date_time: "2024-06-01T00:00:00Z",
+          end_date_time: "2024-08-31T23:59:59Z",
+          token: "BLUE",
+          exchange: "Bithumb",
           status: "active",
-          total_participants: 245,
-          prize_pool: 10000
+          prize_structure: "top_10_percentage",
+          rules: {
+            min_trade_amount: 0.1,
+            max_trades_per_day: 10,
+            allowed_pairs: ["BLUEKRW"]
+          },
+          prize_pool: 10000,
+          prize_pool_token: "BLUE",
+          token_current_price: 2450.75,
+          price_currency: "KRW"
         },
         {
           id: 2,
           name: "Whale Watcher",
-          description: "Track and follow the biggest moves",
-          start_date: "2024-07-15",
-          end_date: "2024-09-15",
+          start_date_time: "2024-07-15T00:00:00Z",
+          end_date_time: "2024-09-15T23:59:59Z",
+          token: "BLUE",
+          exchange: "Bithumb",
           status: "active",
-          total_participants: 189,
-          prize_pool: 25000
+          prize_structure: "fixed_rewards",
+          rules: {
+            min_trade_amount: 0.01,
+            max_trades_per_day: 5,
+            allowed_pairs: ["WBLUEKRW"]
+          },
+          prize_pool: 25000,
+          prize_pool_token: "BLUE",
+          token_current_price: 67500.25,
+          price_currency: "KRW"
         },
         {
           id: 3,
           name: "Quick Flip Contest",
-          description: "Fast trades, quick profits",
-          start_date: "2024-05-01",
-          end_date: "2024-05-31",
+          start_date_time: "2024-05-01T00:00:00Z",
+          end_date_time: "2024-05-31T23:59:59Z",
+          token: "BLUE",
+          exchange: "Bithumb",
           status: "completed",
-          total_participants: 567,
-          prize_pool: 5000
+          prize_structure: "winner_takes_all",
+          rules: {
+            min_trade_amount: 1,
+            max_trades_per_day: 20,
+            allowed_pairs: ["BLUEKRWC"]
+          },
+          prize_pool: 5000,
+          prize_pool_token: "BLUE",
+          token_current_price: 145.80,
+          price_currency: "KRW"
         }
       ]
     }
@@ -48,17 +75,23 @@ class V1::DemoController < ApplicationController
       1 => {
         id: 1,
         name: "Summer Trading Challenge",
-        description: "Trade your way to the top this summer",
-        start_date: "2024-06-01",
-        end_date: "2024-08-31",
+        start_date_time: "2024-06-01T00:00:00Z",
+        end_date_time: "2024-08-31T23:59:59Z",
+        token: "BLUE",
+        exchange: "Bithumb",
         status: "active",
-        total_participants: 245,
-        prize_pool: 10000,
+        prize_structure: "top_10_percentage",
         rules: {
-          min_trade_amount: 100,
+          min_trade_amount: 0.1,
           max_trades_per_day: 10,
-          allowed_tokens: ["ETH", "BTC", "USDC", "SOL"]
+          allowed_pairs: ["BLUEKRW"],
+          trading_hours: "24/7",
+          minimum_hold_time: "1 hour"
         },
+        prize_pool: 10000,
+        prize_pool_token: "BLUE",
+        token_current_price: 2450.75,
+        price_currency: "KRW",
         leaderboard: [
           { rank: 1, wallet: "0x1234...5678", profit: 2500, trades: 45 },
           { rank: 2, wallet: "0x8765...4321", profit: 2200, trades: 38 },
@@ -68,21 +101,53 @@ class V1::DemoController < ApplicationController
       2 => {
         id: 2,
         name: "Whale Watcher",
-        description: "Track and follow the biggest moves",
-        start_date: "2024-07-15",
-        end_date: "2024-09-15",
+        start_date_time: "2024-07-15T00:00:00Z",
+        end_date_time: "2024-09-15T23:59:59Z",
+        token: "BLUEC",
+        exchange: "Bithumb",
         status: "active",
-        total_participants: 189,
-        prize_pool: 25000,
+        prize_structure: "fixed_rewards",
         rules: {
-          min_trade_amount: 1000,
+          min_trade_amount: 0.01,
           max_trades_per_day: 5,
-          allowed_tokens: ["ETH", "BTC", "WETH"]
+          allowed_pairs: ["BLUEKRW"],
+          trading_hours: "24/7",
+          minimum_hold_time: "4 hours"
         },
+        prize_pool: 25000,
+        prize_pool_token: "BLUE",
+        token_current_price: 67500.25,
+        price_currency: "KRW",
         leaderboard: [
           { rank: 1, wallet: "0xaaaa...bbbb", profit: 5500, trades: 12 },
           { rank: 2, wallet: "0xcccc...dddd", profit: 4800, trades: 8 },
           { rank: 3, wallet: "0xeeee...ffff", profit: 3900, trades: 15 }
+        ]
+      },
+      3 => {
+        id: 3,
+        name: "Quick Contest",
+        start_date_time: "2024-05-01T00:00:00Z",
+        end_date_time: "2024-05-31T23:59:59Z",
+        token: "BLUE",
+        exchange: "Bithumb",
+        status: "completed",
+        prize_structure: "winner_takes_all",
+        rules: {
+          min_trade_amount: 1,
+          max_trades_per_day: 20,
+          allowed_pairs: ["BLUEKRW"],
+          trading_hours: "24/7",
+          minimum_hold_time: "30 minutes"
+        },
+        prize_pool: 5000,
+        prize_pool_token: "BLUE",
+        token_current_price: 145.80,
+        price_currency: "KRW",
+        leaderboard: [
+          { rank: 1, wallet: "0xfff...aaa", profit: 1250, trades: 89 },
+          { rank: 2, wallet: "0xbbb...ccc", profit: 980, trades: 76 },
+          { rank: 3, wallet: "0xddd...eee", profit: 750, trades: 65 }
         ]
       }
     }
@@ -94,6 +159,87 @@ class V1::DemoController < ApplicationController
     else
       render json: { error: 'Campaign not found' }, status: :not_found
     end
+  end
+
+  # GET /v1/demo/campaigns/:campaign_id/user_data
+  def user_data
+    campaign_id = params[:campaign_id].to_i
+
+    # Try to get user_id from params or current_user safely
+    user_id = params[:user_id]
+    if user_id.nil?
+      begin
+        user_id = current_user&.id
+      rescue
+        user_id = nil
+      end
+    end
+
+    if user_id.nil?
+      render json: { error: 'User ID required' }, status: :bad_request
+      return
+    end
+
+    # Get user wallet safely
+    user_wallet = begin
+      current_user&.wallet_address
+    rescue
+      nil
+    end || "0x#{user_id}...#{rand(1000..9999)}"
+
+    # Mock user data based on campaign and user
+    user_data = {
+      campaign_id: campaign_id,
+      user_id: user_id,
+      eligibilityForPrizePool: true,
+      totalExecutedTradeVol: rand(50000..500000).round(2),
+      outstandingOrders: [
+        {
+          id: rand(1000..9999),
+          pair: "BLUEKRW",
+          type: "buy",
+          amount: rand(10..100).round(2),
+          price: rand(2400..2500).round(2),
+          status: "pending",
+          created_at: (Time.current - rand(1..24).hours).iso8601
+        },
+        {
+          id: rand(1000..9999),
+          pair: "BLUEKRW",
+          type: "sell",
+          amount: rand(5..50).round(2),
+          price: rand(2500..2600).round(2),
+          status: "pending",
+          created_at: (Time.current - rand(1..12).hours).iso8601
+        }
+      ],
+      prize_pool_rank: rand(1..100),
+      price_pool_rank_listing: Array.new(10) do |i|
+        {
+          rank: i + 1,
+          user_id: i == 0 ? user_id : rand(1000..9999),
+          wallet: i == 0 ? user_wallet : "0x#{rand(1000..9999)}...#{rand(1000..9999)}",
+          profit: rand(1000..10000).round(2),
+          trades: rand(10..100),
+          volume: rand(50000..500000).round(2)
+        }
+      end,
+      executedOrders: Array.new(rand(5..15)) do
+        {
+          id: rand(10000..99999),
+          pair: "BLUEKRW",
+          type: ["buy", "sell"].sample,
+          amount: rand(1..100).round(6),
+          price: rand(2400..2600).round(2),
+          total: rand(2400..260000).round(2),
+          fee: rand(1..10).round(4),
+          status: "completed",
+          executed_at: (Time.current - rand(1..168).hours).iso8601
+        }
+      end
+    }
+
+    render json: { user_data: user_data }
   end
 
   # POST /v1/demo/campaigns/:campaign_id/trades

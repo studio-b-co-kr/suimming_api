@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
     # Nested route for trades within campaigns
     get '/demo/campaigns/:id', to: 'demo#campaign'
+    get '/demo/campaigns/:campaign_id/user_data', to: 'demo#user_data'
     post '/demo/campaigns/:campaign_id/trades', to: 'demo#create_trade'
   end
 end
