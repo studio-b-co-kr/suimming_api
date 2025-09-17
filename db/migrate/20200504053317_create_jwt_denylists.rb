@@ -1,4 +1,4 @@
-class CreateJwtDenylists < ActiveRecord::Migration[7.1]
+class CreateJwtDenylists < ActiveRecord::Migration[6.0]
   def change
     create_table :jwt_denylists do |t|
       t.bigint :user_id, null: false
