@@ -14,5 +14,18 @@ Rails.application.routes.draw do
         get :latest
       end
     end
+
+    resources :demo, only: [] do
+      collection do
+        get :campaigns
+      end
+      member do
+        get :campaign
+      end
+    end
+
+    # Nested route for trades within campaigns
+    get '/demo/campaigns/:id', to: 'demo#campaign'
+    post '/demo/campaigns/:campaign_id/trades', to: 'demo#create_trade'
   end
 end
