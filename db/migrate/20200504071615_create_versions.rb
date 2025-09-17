@@ -1,4 +1,4 @@
-class CreateVersions < ActiveRecord::Migration[6.0]
+class CreateVersions < ActiveRecord::Migration[8.0]
   def change
     create_table :versions do |t|
       t.string :latest_version, default: ''
