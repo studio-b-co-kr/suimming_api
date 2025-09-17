@@ -23,7 +23,9 @@ class V1::DemoController < ApplicationController
           prize_pool: 10000,
           prize_pool_token: "BLUE",
           token_current_price: 2450.75,
-          price_currency: "KRW"
+          price_currency: "KRW",
+          priceChange: 125.50,
+          priceChangePercent: 5.4
         },
         {
           id: 2,
@@ -42,7 +44,9 @@ class V1::DemoController < ApplicationController
           prize_pool: 25000,
           prize_pool_token: "BLUE",
           token_current_price: 67500.25,
-          price_currency: "KRW"
+          price_currency: "KRW",
+          priceChange: -2850.75,
+          priceChangePercent: -4.1
         },
         {
           id: 3,
@@ -61,7 +65,9 @@ class V1::DemoController < ApplicationController
           prize_pool: 5000,
           prize_pool_token: "BLUE",
           token_current_price: 145.80,
-          price_currency: "KRW"
+          price_currency: "KRW",
+          priceChange: 12.30,
+          priceChangePercent: 9.2
         }
       ]
     }
@@ -92,6 +98,8 @@ class V1::DemoController < ApplicationController
         prize_pool_token: "BLUE",
         token_current_price: 2450.75,
         price_currency: "KRW",
+        priceChange: 125.50,
+        priceChangePercent: 5.4,
         leaderboard: [
           { rank: 1, wallet: "0x1234...5678", profit: 2500, trades: 45 },
           { rank: 2, wallet: "0x8765...4321", profit: 2200, trades: 38 },
@@ -103,7 +111,7 @@ class V1::DemoController < ApplicationController
         name: "Whale Watcher",
         start_date_time: "2024-07-15T00:00:00Z",
         end_date_time: "2024-09-15T23:59:59Z",
-        token: "BLUEC",
+        token: "BLUE",
         exchange: "Bithumb",
         status: "active",
         prize_structure: "fixed_rewards",
@@ -118,6 +126,8 @@ class V1::DemoController < ApplicationController
         prize_pool_token: "BLUE",
         token_current_price: 67500.25,
         price_currency: "KRW",
+        priceChange: -2850.75,
+        priceChangePercent: -4.1,
         leaderboard: [
           { rank: 1, wallet: "0xaaaa...bbbb", profit: 5500, trades: 12 },
           { rank: 2, wallet: "0xcccc...dddd", profit: 4800, trades: 8 },
@@ -144,6 +154,8 @@ class V1::DemoController < ApplicationController
         prize_pool_token: "BLUE",
         token_current_price: 145.80,
         price_currency: "KRW",
+        priceChange: 12.30,
+        priceChangePercent: 9.2,
         leaderboard: [
           { rank: 1, wallet: "0xfff...aaa", profit: 1250, trades: 89 },
           { rank: 2, wallet: "0xbbb...ccc", profit: 980, trades: 76 },
