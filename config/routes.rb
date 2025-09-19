@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     resources :sui, only: [] do
       collection do
         post :submit_transaction
+      end
+    end
         
     resources :campaigns, only: [:index, :show] do
       member do
