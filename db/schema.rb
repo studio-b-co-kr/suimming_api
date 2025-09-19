@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_19_053338) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_19_131558) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,6 +50,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_19_053338) do
     t.datetime "completed_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "tx_id", comment: "onchain tx id"
     t.index ["campaign_id"], name: "index_campaign_orders_on_campaign_id"
     t.index ["exchange", "symbol"], name: "index_campaign_orders_on_exchange_and_symbol"
     t.index ["exchange_setting_id"], name: "index_campaign_orders_on_exchange_setting_id"
@@ -161,4 +162,3 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_19_053338) do
   add_foreign_key "campaign_rewards", "campaign_participant_epochs"
   add_foreign_key "exchange_settings", "users"
 end
-
