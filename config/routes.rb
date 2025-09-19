@@ -28,5 +28,9 @@ Rails.application.routes.draw do
         get :my_executed_orders
       end
     end
+
+    resources :campaign_orders, only: [:create] do
+    end
+
   end
 end
