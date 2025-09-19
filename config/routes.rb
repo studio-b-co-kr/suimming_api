@@ -14,5 +14,13 @@ Rails.application.routes.draw do
         get :latest
       end
     end
+
+    resources :campaigns, only: [:index, :show] do
+      member do
+        get :my_summary
+        get :my_open_orders
+        get :my_executed_orders
+      end
+    end
   end
 end
