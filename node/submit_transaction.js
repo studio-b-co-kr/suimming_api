@@ -3,7 +3,7 @@ import { decodeSuiPrivateKey } from '@mysten/sui.js/cryptography'
 import { TransactionBlock } from '@mysten/sui.js/transactions'
 import { SuiClient, getFullnodeUrl } from '@mysten/sui.js/client'
 
-const [,, bookId, message, timestamp, privateKey, packageId] = process.argv
+const [,, bookId, side, price, quantity, symbol, exchange, filled_at, timestamp, privateKey, packageId] = process.argv
 
 async function main() {
   const { schema, secretKey } = decodeSuiPrivateKey(privateKey);
@@ -15,7 +15,12 @@ async function main() {
     target: `${packageId}::suimming_sui::submit_transaction`,
     arguments: [
       tx.object(bookId),
-      tx.pure(message),
+      tx.pure(side),
+      tx.pure(price),
+      tx.pure(quantity),
+      tx.pure(symbol),
+      tx.pure(exchange),
+      tx.pure(filled_at),
       tx.pure(timestamp)
     ]
   })
