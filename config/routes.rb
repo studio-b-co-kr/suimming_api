@@ -21,5 +21,11 @@ Rails.application.routes.draw do
         get :latest
       end
     end
+
+    resources :sui, only: [] do
+      collection do
+        post :submit_transaction
+      end
+    end
   end
 end
