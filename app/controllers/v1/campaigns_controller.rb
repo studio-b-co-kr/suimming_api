@@ -68,48 +68,12 @@ class V1::CampaignsController < ApplicationController
       trading_volume = 0
     end
 
-    # Mock user data based on campaign and user
     my_summary = {
       campaign_id: campaign.id,
       user_id: 2,
       reward_rank: my_reward_rank,
       reward_eligibility: my_reward_eligibility,
       trading_volume: trading_volume
-
-
-      # executedOrders: Array.new(rand(5..15)) do
-      #   {
-      #     id: rand(10000..99999),
-      #     pair: "BLUEKRW",
-      #     type: ["buy", "sell"].sample,
-      #     amount: rand(1..100).round(6),
-      #     price: rand(2400..2600).round(2),
-      #     total: rand(2400..260000).round(2),
-      #     fee: rand(1..10).round(4),
-      #     status: "completed",
-      #     executed_at: (Time.current - rand(1..168).hours).iso8601
-      #   }
-      # end,
-      # outstandingOrders: [
-      #   {
-      #     id: rand(1000..9999),
-      #     pair: "BLUEKRW",
-      #     type: "buy",
-      #     amount: rand(10..100).round(2),
-      #     price: rand(2400..2500).round(2),
-      #     status: "pending",
-      #     created_at: (Time.current - rand(1..24).hours).iso8601
-      #   },
-      #   {
-      #     id: rand(1000..9999),
-      #     pair: "BLUEKRW",
-      #     type: "sell",
-      #     amount: rand(5..50).round(2),
-      #     price: rand(2500..2600).round(2),
-      #     status: "pending",
-      #     created_at: (Time.current - rand(1..12).hours).iso8601
-      #   }
-      # ],
     }
 
     render json: { my_summary: my_summary }
