@@ -1,10 +1,16 @@
 class V1::CampaignOrdersController < ApplicationController
-require "securerandom"
+  skip_before_action :authenticate_request!, only: [:create]
+  require "securerandom"
 
   def create
-    my_exchange_setting = ExchangeSetting.find_by(user_id: current_user.id)
+    user_id = if authenticate_request!
+      current_user.id
+    else
+      2
+    end
+    my_exchange_setting = ExchangeSetting.find_by(user_id: user_id)
     created_order = CampaignOrder.new(
-      user_id: current_user.id,
+      user_id: user_id,
       exchange_setting_id: my_exchange_setting.id,
       campaign_id: campaign_order_params[:campaign_id],
       exchange: campaign_order_params[:exchange],

@@ -22,7 +22,8 @@ module Secured
     blacklist = JwtDenylist.find_by(jti: payload['jti'])
     raise JWT::ExpiredSignature if blacklist.exp < Time.zone.now
   rescue JWT::VerificationError, JWT::DecodeError, JWT::ExpiredSignature, JWT::InvalidJtiError => e
-    render json: { errors: "Not Authenticated: #{e}" }, status: :unauthorized
+    # render json: { errors: "Not Authenticated: #{e}" }, status: :unauthorized
+    false
   end
 
   def http_token

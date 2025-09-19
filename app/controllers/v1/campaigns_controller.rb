@@ -1,5 +1,5 @@
 class V1::CampaignsController < ApplicationController
-  skip_before_action :authenticate_request!, only: [:index, :show, :my_summary, :my_open_orders, :my_executed_orders]
+  skip_before_action :authenticate_request!, only: [:index, :show]
 
   def index
     campaigns = Campaign.where.not(status: "draft").order(created_at: :desc)
@@ -39,7 +39,7 @@ class V1::CampaignsController < ApplicationController
   end
 
   def my_open_orders
-    if http_token.present?
+    if authenticate_request!
       campaign_orders = CampaignOrder.where(user_id: current_user.id, campaign_id: params[:id], completed_on: nil)
     else
       campaign_orders = []
@@ -50,7 +50,7 @@ class V1::CampaignsController < ApplicationController
   end
 
   def my_executed_orders
-    if http_token.present?
+    if authenticate_request!
       campaign_orders = CampaignOrder.where(user_id: current_user.id, campaign_id: params[:id]).where("filled_quantity > 0 and completed_on is not null")
     else
       campaign_orders = []
@@ -62,7 +62,7 @@ class V1::CampaignsController < ApplicationController
 
   def my_summary
     campaign = Campaign.find(params[:id])
-    if http_token.present?
+    if authenticate_request!
       campaign_participants = CampaignParticipant.where(campaign_id: params[:id]).order(trading_volume: :desc)
       my_campaign_participant = campaign_participants.find_by(user_id: 2)
 
