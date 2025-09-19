@@ -1,5 +1,5 @@
 class V1::CampaignsController < ApplicationController
-  skip_before_action :authenticate_request!, only: [:index, :show, :my_summary]
+  skip_before_action :authenticate_request!, only: [:index, :show, :my_summary, :my_open_orders, :my_executed_orders]
 
   def index
     campaigns = Campaign.where.not(status: "draft").order(created_at: :desc)
@@ -39,11 +39,17 @@ class V1::CampaignsController < ApplicationController
   end
 
   def my_open_orders
-
+    campaign_orders = CampaignOrder.where(user_id: 2, campaign_id: params[:id], completed_on: nil)
+    render json: {
+      my_open_orders: campaign_orders
+    }
   end
 
   def my_executed_orders
-    
+    campaign_orders = CampaignOrder.where(user_id: 2, campaign_id: params[:id]).where("filled_quantity > 0 and completed_on is not null")
+    render json: {
+      my_executed_orders: campaign_orders
+    }
   end
 
   def my_summary

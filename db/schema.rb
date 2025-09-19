@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_18_060851) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_19_053338) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -27,6 +27,35 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_18_060851) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["campaign_id"], name: "index_campaign_agreements_on_campaign_id"
+  end
+
+  create_table "campaign_orders", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "exchange_setting_id", null: false
+    t.bigint "campaign_id", null: false
+    t.string "exchange", null: false
+    t.string "symbol", null: false, comment: "거래쌍 예: BTC/USDT"
+    t.string "order_id", comment: "거래소에서 부여하는 주문 ID"
+    t.string "order_type", comment: "limit, market, etc"
+    t.string "side", comment: "buy or sell"
+    t.decimal "price", precision: 20, scale: 10
+    t.decimal "quantity", precision: 20, scale: 10
+    t.decimal "filled_price", precision: 20, scale: 10
+    t.decimal "filled_quantity", precision: 20, scale: 10
+    t.datetime "filled_at"
+    t.datetime "cancelled_at"
+    t.json "fees", default: []
+    t.json "trades", default: []
+    t.string "status", default: "pending", null: false, comment: "pending, cancelled, filled"
+    t.datetime "completed_on"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_id"], name: "index_campaign_orders_on_campaign_id"
+    t.index ["exchange", "symbol"], name: "index_campaign_orders_on_exchange_and_symbol"
+    t.index ["exchange_setting_id"], name: "index_campaign_orders_on_exchange_setting_id"
+    t.index ["order_id"], name: "index_campaign_orders_on_order_id"
+    t.index ["user_id", "campaign_id"], name: "index_campaign_orders_on_user_id_and_campaign_id"
+    t.index ["user_id"], name: "index_campaign_orders_on_user_id"
   end
 
   create_table "campaign_participant_epochs", force: :cascade do |t|
@@ -86,6 +115,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_18_060851) do
     t.index ["user_id"], name: "index_campaigns_on_user_id"
   end
 
+  create_table "exchange_settings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "exchange", null: false, comment: "거래소 이름 (bithumb, upbit 등)"
+    t.string "access_key", null: false
+    t.string "secret_key", null: false
+    t.string "assigned_ip", comment: "할당된 IP"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_exchange_settings_on_user_id"
+  end
+
   create_table "jwt_denylists", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "jti", null: false
@@ -113,7 +153,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_18_060851) do
   end
 
   add_foreign_key "campaign_agreements", "campaigns"
+  add_foreign_key "campaign_orders", "campaigns"
+  add_foreign_key "campaign_orders", "exchange_settings"
+  add_foreign_key "campaign_orders", "users"
   add_foreign_key "campaign_participant_epochs", "campaign_participants"
   add_foreign_key "campaign_participants", "campaigns"
   add_foreign_key "campaign_rewards", "campaign_participant_epochs"
+  add_foreign_key "exchange_settings", "users"
 end
+
