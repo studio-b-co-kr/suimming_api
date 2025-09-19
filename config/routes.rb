@@ -14,7 +14,11 @@ Rails.application.routes.draw do
         get :latest
       end
     end
-
+    
+    resources :sui, only: [] do
+      collection do
+        post :submit_transaction
+        
     resources :campaigns, only: [:index, :show] do
       member do
         get :my_summary

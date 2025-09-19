@@ -161,3 +161,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_19_053338) do
   add_foreign_key "campaign_rewards", "campaign_participant_epochs"
   add_foreign_key "exchange_settings", "users"
 end
+
