@@ -39,22 +39,24 @@ class V1::CampaignsController < ApplicationController
   end
 
   def my_open_orders
-    if authenticate_request!
+    # if authenticate_request!
+    #   puts current_user.id
       campaign_orders = CampaignOrder.where(user_id: current_user.id, campaign_id: params[:id], completed_on: nil)
-    else
-      campaign_orders = []
-    end
+    # else
+    #   puts "not authenticate_request"
+    #   campaign_orders = []
+    # end
     render json: {
       my_open_orders: campaign_orders
     }
   end
 
   def my_executed_orders
-    if authenticate_request!
+    # if authenticate_request!
       campaign_orders = CampaignOrder.where(user_id: current_user.id, campaign_id: params[:id]).where("filled_quantity > 0 and completed_on is not null")
-    else
-      campaign_orders = []
-    end
+    # else
+    #   campaign_orders = []
+    # end
     render json: {
       my_executed_orders: campaign_orders
     }
@@ -62,7 +64,7 @@ class V1::CampaignsController < ApplicationController
 
   def my_summary
     campaign = Campaign.find(params[:id])
-    if authenticate_request!
+    # if authenticate_request!
       campaign_participants = CampaignParticipant.where(campaign_id: params[:id]).order(trading_volume: :desc)
       my_campaign_participant = campaign_participants.find_by(user_id: 2)
 
@@ -83,15 +85,15 @@ class V1::CampaignsController < ApplicationController
         reward_eligibility: my_reward_eligibility,
         trading_volume: trading_volume
       }
-    else
-      my_summary = {
-        campaign_id: campaign.id,
-        user_id: nil,
-        reward_rank: nil,
-        reward_eligibility: false,
-        trading_volume: 0
-      }
-    end
+    # else
+    #   my_summary = {
+    #     campaign_id: campaign.id,
+    #     user_id: nil,
+    #     reward_rank: nil,
+    #     reward_eligibility: false,
+    #     trading_volume: 0
+    #   }
+    # end
     render json: { my_summary: my_summary }
   end
 end

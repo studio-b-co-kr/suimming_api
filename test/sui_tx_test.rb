@@ -2,11 +2,11 @@ require 'test_helper'
 
 class SubmitSuiTransactionTest < ActiveSupport::TestCase
   setup do
-    @side = ["buy", "sell"].sample
-    @price = rand(10_000.0..50_000.0).round(2).to_s
-    @quantity = rand(0.001..1.0).round(3).to_s
-    @symbol = "BLUE/USDT"
-    @exchange = "Bithumb"
+    @side = "buy"
+    @price = 5000.to_s
+    @quantity = 1.to_s
+    @symbol = "KRW-SUI"
+    @exchange = "bithumb"
     @filled_at = Time.now.to_i
     @timestamp = Time.now.to_i
   end
